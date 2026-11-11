@@ -1,0 +1,43 @@
+name: API tests (MySQL)
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: quantix_requests
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -proot"
+          --health-interval=10s --health-timeout=5s --health-retries=10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: mbstring, xml, pdo_mysql, curl, zip, bcmath
+          coverage: none
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+      - name: Configure Laravel
+        run: |
+          cp .env.example .env
+          sed -i 's/^DB_PASSWORD=$/DB_PASSWORD=root/' .env
+          php artisan key:generate
+      - name: Create dedicated MySQL test database
+        run: mysql -h 127.0.0.1 -uroot -proot -e 'CREATE DATABASE IF NOT EXISTS quantix_requests_test CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;'
+      - name: Verify migration and seed in demo database
+        run: php artisan migrate:fresh --seed --force
+      - name: Run PHPUnit feature and unit tests
+        run: php artisan test
+      - name: Run static project checks
+        run: php tools/static-check.php

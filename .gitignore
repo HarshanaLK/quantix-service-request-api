@@ -1,0 +1,27 @@
+/vendor
+/node_modules
+/.env
+/.env.*.local
+.phpunit.result.cache
+.phpunit.cache
+/storage/*.key
+/storage/logs/*
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+/bootstrap/cache/*.php
+.DS_Store
+.idea
+.vscode
+
+# Local SQLite database files
+/database/*.sqlite
+/database/*.sqlite-*
+
+# Retain Laravel writable directory placeholders
+!/storage/framework/cache/.gitkeep
+!/storage/framework/cache/data/
+!/storage/framework/cache/data/.gitkeep
+!/storage/framework/sessions/.gitkeep
+!/storage/framework/views/.gitkeep
+!/storage/logs/.gitkeep
