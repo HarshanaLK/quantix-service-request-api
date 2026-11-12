@@ -15,7 +15,7 @@ interface ServiceRequestRepositoryInterface extends EloquentRepositoryInterface
 
     public function findOrFail(int $id, array $relations = []): ServiceRequest;
 
-    /** Must be called inside DB::transaction. */
+
     public function findForUpdateOrFail(int $id): ServiceRequest;
 
     public function create(array $attributes): ServiceRequest;
