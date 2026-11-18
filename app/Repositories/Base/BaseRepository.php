@@ -8,8 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Common Eloquent query and persistence helpers.
  *
- * This is intentionally not a public generic update/delete API. Quantix
- * mutations go through policies, transactions and the workflow service.
+ * This is intentionally not a public generic update/delete API. 
  */
 abstract class BaseRepository implements EloquentRepositoryInterface
 {
